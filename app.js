@@ -20,10 +20,14 @@ app.get('/', (req, res) => {
     res.render('home')
 })
 
-app.get('/makeStore', async (req, res) => {
-    const store = new RecordStore({title: "Relay Records", location: "123 High Street"});
-    await store.save();
-    res.send(store);
+app.get('/recordstores', async (req, res) => {
+    const recordStores = await RecordStore.find({});
+    res.render('recordstores/index', {recordStores})
+})
+
+app.get('/recordstores/:id', async(req, res) => {
+    const recordstore = await RecordStore.findById(req.params.id)
+    res.render('recordstores/show', {recordstore})
 })
 
 app.listen(3000, () => {
