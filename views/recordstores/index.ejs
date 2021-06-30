@@ -8,6 +8,9 @@
 </head>
 <body>
     <h1>All Recordstores</h1>
+    <div>
+        <a href="recordstores/new">New recordstore</a>
+    </div>
     <ul>
         <% for(let store of recordStores){ %>
             <li><a href="/recordstores/<%=store._id%>"><%=store.title%> - <%=store.location%></a></li>

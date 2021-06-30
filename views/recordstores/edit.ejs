@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Record Store</title>
+</head>
+<body>
+    <h1>Edit recordstore</h1>
+    <form action="/recordstores/<%=recordstore._id%>?_method=PUT" method="POST">
+        <div>
+            <label for="title">Title</label>
+            <input type="text" id="title" name="recordstore[title]" value="<%= recordstore.title %>">
+        </div>
+        <div>
+            <label for="location">Location</label>
+            <input type="text" id="location" name="recordstore[location]" value="<%= recordstore.location %>">
+        </div>
+        <button>Update record store</button>
+        <a href="/recordstores/<%= recordstore._id %>">Back to recordstore</a>
+    </form>
+</body>
+</html>

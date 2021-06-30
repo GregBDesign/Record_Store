@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const methodOverride = require('method-override');
 const RecordStore = require('./models/recordstore');
 
 mongoose.connect('mongodb://localhost:27017/record-store', {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true});
@@ -16,6 +17,9 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+app.use(express.urlencoded({extended: true}))
+app.use(methodOverride('_method'))
+
 app.get('/', (req, res) => {
     res.render('home')
 })
@@ -25,9 +29,30 @@ app.get('/recordstores', async (req, res) => {
     res.render('recordstores/index', {recordStores})
 })
 
-app.get('/recordstores/:id', async(req, res) => {
+app.get('/recordstores/new', async (req, res) => {
+    res.render('recordstores/new');
+})
+
+app.post('/recordstores', async (req,res) => {
+    const recordStore = new RecordStore(req.body.recordstore);
+    await recordStore.save();
+    res.redirect(`recordstores/${recordStore.id}`);
+})
+
+app.get('/recordstores/:id', async (req, res) => {
     const recordstore = await RecordStore.findById(req.params.id)
     res.render('recordstores/show', {recordstore})
+})
+
+app.get('/recordstores/:id/edit', async (req, res) => {
+    const recordstore = await RecordStore.findById(req.params.id)
+    res.render('recordstores/edit', {recordstore})
+})
+
+app.put('/recordstores/:id', async (req, res) => {
+    const {id} = req.params
+    const recordstore = await RecordStore.findByIdAndUpdate(id, {...req.body.recordstore})
+    res.redirect(`/recordstores/${recordstore._id}`)
 })
 
 app.listen(3000, () => {
