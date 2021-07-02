@@ -10,6 +10,9 @@
     <h1><%=recordstore.title%></h1>
     <h2><%=recordstore.location%></h2>
     <a href="/recordstores/<%= recordstore.id %>/edit">Edit record store</a>
+    <form action="/recordstores/<%= recordstore._id %>?_method=DELETE" method="POST">
+        <button>Delete</button>
+    </form>
     <footer>
         <a href="/recordstores">All recordstores</a>
     </footer>

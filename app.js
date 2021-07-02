@@ -55,6 +55,12 @@ app.put('/recordstores/:id', async (req, res) => {
     res.redirect(`/recordstores/${recordstore._id}`)
 })
 
+app.delete('/recordstores/:id', async (req,res) => {
+    const {id} = req.params;
+    await RecordStore.findByIdAndDelete(id);
+    res.redirect('/recordstores')
+})
+
 app.listen(3000, () => {
     console.log("Serving on port 3000");
 })
