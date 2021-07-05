@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Record Stores</title>
-</head>
-<body>
+<% layout('layouts/boilerplate') %>
     <h1>All Recordstores</h1>
     <div>
         <a href="recordstores/new">New recordstore</a>
@@ -16,5 +8,3 @@
             <li><a href="/recordstores/<%=store._id%>"><%=store.title%> - <%=store.location%></a></li>
         <% } %>
     </ul>
-</body>
-</html>
