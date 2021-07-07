@@ -22,7 +22,9 @@ const seedDB = async () => {
         const random1000 = Math.floor(Math.random() * 1000);
         const newStore = new RecordStore({
             title: `${sample(descriptors)} ${sample(places)}`,
-            location: `${cities[random1000].city} ${cities[random1000].state}`
+            location: `${cities[random1000].city} ${cities[random1000].state}`,
+            image: 'https://source.unsplash.com/collection/53838752/640x426',
+            description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi ipsa ratione commodi nemo unde, fugiat veritatis temporibus porro quam saepe!"
         })
         await newStore.save();
     }

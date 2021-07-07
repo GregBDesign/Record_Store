@@ -27,8 +27,8 @@ app.get('/', (req, res) => {
 })
 
 app.get('/recordstores', async (req, res) => {
-    const recordStores = await RecordStore.find({});
-    res.render('recordstores/index', {recordStores})
+    const recordstore = await RecordStore.find({});
+    res.render('recordstores/index', {recordstore})
 })
 
 app.get('/recordstores/new', async (req, res) => {

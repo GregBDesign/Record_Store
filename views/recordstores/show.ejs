@@ -1,6 +1,8 @@
 <% layout('layouts/boilerplate') %>
-    <h1><%=recordstore.title%></h1>
-    <h2><%=recordstore.location%></h2>
+    <h1><%= recordstore.title %></h1>
+    <h2><%= recordstore.location %></h2>
+    <img src="<%= recordstore.image %>" alt="Image of recordstore">
+    <p><%= recordstore.description %></p>
     <a href="/recordstores/<%= recordstore.id %>/edit">Edit record store</a>
     <form action="/recordstores/<%= recordstore._id %>?_method=DELETE" method="POST">
         <button>Delete</button>
