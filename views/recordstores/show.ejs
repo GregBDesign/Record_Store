@@ -1,12 +1,27 @@
 <% layout('layouts/boilerplate') %>
-    <h1><%= recordstore.title %></h1>
-    <h2><%= recordstore.location %></h2>
-    <img src="<%= recordstore.image %>" alt="Image of recordstore">
-    <p><%= recordstore.description %></p>
-    <a href="/recordstores/<%= recordstore.id %>/edit">Edit record store</a>
-    <form action="/recordstores/<%= recordstore._id %>?_method=DELETE" method="POST">
-        <button>Delete</button>
-    </form>
-    <footer>
-        <a href="/recordstores">All recordstores</a>
-    </footer>
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card">
+                <img src="<%= recordstore.image %>" class="card-img-top" alt="Image of recordstore">
+                <div class="card-body">
+                    <h5 class="card-title"><%= recordstore.title %></h5>
+                    <p class="card-text"><%= recordstore.description %></p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><%= recordstore.location %></li>
+                </ul>
+                <div class="card-body">
+                    <a href="/recordstores/<%= recordstore.id %>/edit" class="card-link btn btn-warning">Edit record store</a>
+                    <form class="d-inline" action="/recordstores/<%= recordstore._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+            <footer>
+                <a href="/recordstores">All recordstores</a>
+            </footer>
+        </div>
+    </div>
+    
+
+    
