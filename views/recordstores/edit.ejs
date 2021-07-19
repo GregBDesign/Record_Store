@@ -2,22 +2,22 @@
     <div class="row">
         <h1 class="text-center">Edit Recordstore</h1>
         <div class="col-6 offset-3">
-            <form action="/recordstores/<%=recordstore._id%>?_method=PUT" method="POST">
+            <form action="/recordstores/<%=recordstore._id%>?_method=PUT" method="POST" class="valid-form" novalidate>
                 <div class="mb-3">
                     <label class="form-label" for="title">Title</label>
-                    <input class="form-control" type="text" id="title" name="recordstore[title]" value="<%= recordstore.title %>">
+                    <input class="form-control" type="text" id="title" name="recordstore[title]" value="<%= recordstore.title %>" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="location">Location</label>
-                    <input class="form-control" type="text" id="location" name="recordstore[location]" value="<%= recordstore.location %>">
+                    <input class="form-control" type="text" id="location" name="recordstore[location]" value="<%= recordstore.location %>" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="image">Image URL</label>
-                    <input class="form-control" type="text" id="image" name="recordstore[image]" value="<%= recordstore.image %>">
+                    <input class="form-control" type="text" id="image" name="recordstore[image]" value="<%= recordstore.image %>" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="description">Description</label>
-                    <textarea class="form-control" type="text" id="description" name="recordstore[description]"><%= recordstore.description %></textarea>
+                    <textarea class="form-control" type="text" id="description" name="recordstore[description]" required><%= recordstore.description %></textarea>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-success">Update record store</button>
