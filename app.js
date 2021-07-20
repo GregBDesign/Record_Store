@@ -2,17 +2,20 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
+const Join = require('joi');
 const wrapAsync = require('./helpers/wrapAsync');
+const ExpressError = require('./helpers/expressErr');
 const methodOverride = require('method-override');
 const RecordStore = require('./models/recordstore');
+const Joi = require('joi');
 
 mongoose.connect('mongodb://localhost:27017/record-store', {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true});
    
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error"));
 db.once("open", () => {
-console.log("Database connected");
-});
+    console.log("Database connected");
+    });
 
 const app = express();
 
@@ -39,6 +42,19 @@ app.get('/recordstores/new', wrapAsync(async (req, res, next) => {
 )
 
 app.post('/recordstores', wrapAsync(async (req, res, next) => {
+        const recordstoreSchema = Joi.object({
+            recordstore: Joi.object({
+                title: Joi.string().required(),
+                location: Joi.string().required(),
+                image: Joi.string().required(),
+                description: Joi.string().required()
+            }).required()
+        })
+        const {error} = recordstoreSchema.validate(req.body)
+        if(error){
+            const errMsg = error.details.map(el => el.message).join(",")
+            throw new ExpressError(errMsg, 500);
+        }
         const recordStore = new RecordStore(req.body.recordstore);
         await recordStore.save();
         res.redirect(`recordstores/${recordStore.id}`);
@@ -71,8 +87,13 @@ app.delete('/recordstores/:id', wrapAsync(async (req, res, next) => {
     })
 )
 
+app.all('*', (req, res, next) => {
+    next(new ExpressError('Page not found', 404))
+})
+
 app.use((err, req, res, next) => {
-    res.send("something went wrong")
+    const {statusCode = 500} = err
+    res.status(statusCode).render('error', {err})
 })
 
 app.listen(3000, () => {
