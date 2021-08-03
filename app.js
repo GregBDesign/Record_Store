@@ -73,7 +73,7 @@ app.post('/recordstores', validationRS, wrapAsync(async (req, res, next) => {
 )
 
 app.get('/recordstores/:id', wrapAsync(async (req, res, next) => {
-        const recordstore = await RecordStore.findById(req.params.id)
+        const recordstore = await RecordStore.findById(req.params.id).populate('reviews')
         res.render('recordstores/show', {recordstore})
     })
 )
@@ -107,6 +107,13 @@ app.post('/recordstores/:id/reviews', validationRev, wrapAsync(async (req, res, 
     res.redirect(`/recordstores/${recordstore._id}`);
     })
 )
+
+app.delete('/recordstores/:id/reviews/:reviewId', wrapAsync(async (req, res) => {
+    const {id, reviewId} = req.params
+    await RecordStore.findByIdAndUpdate(id, {$pull: {reviews: reviewId}});
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/recordstores/${id}`);
+}))
 
 // Handling 404 issues
 app.all('*', (req, res, next) => {
