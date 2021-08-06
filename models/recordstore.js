@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const review = require('./review');
+const Review = require('./review');
 const Schema = mongoose.Schema;
 
 const RecordStoreSchema = new Schema({
@@ -13,6 +13,17 @@ const RecordStoreSchema = new Schema({
             ref: "Review"
         }   
     ]
+})
+
+/* Deletion middleware to delete all reviews associated with a recordstore
+on deletion of a recordstore */
+RecordStoreSchema.post('findOneAndDelete', async function (doc) {
+    if(doc){
+        await Review.deleteMany({
+            _id: {
+                $in: doc.reviews
+        }})
+    }
 })
 
 module.exports = mongoose.model('RecordStore', RecordStoreSchema);
