@@ -8,15 +8,20 @@ const flash = require('connect-flash')
 // extension of Error class, allows a custom error and http response code to be passed to error handling middleware
 const ExpressError = require('./helpers/expressErr')
 const methodOverride = require('method-override')
+const passport = require('passport')
+const passportLocal = require('passport-local')
+const User = require('./models/user')
 
 const recordstores = require('./routes/recordstores')
 const reviews = require('./routes/reviews')
+const users = require('./routes/users')
 
 mongoose.connect('mongodb://localhost:27017/record-store', 
     {useNewUrlParser: true, 
     useCreateIndex: true,
     useUnifiedTopology: true,
-    useFindAndModify: false})
+    useFindAndModify: false
+})
    
 const db = mongoose.connection
 db.on("error", console.error.bind(console, "connection error"))
@@ -44,6 +49,12 @@ app.use(session({
     }
 }))
 app.use(flash())
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new passportLocal(User.authenticate()))
+// Store and unstore user in a session
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
 
 // Flash middleware
 app.use((req, res, next) => {
@@ -54,6 +65,7 @@ app.use((req, res, next) => {
 
 app.use("/recordstores", recordstores)
 app.use("/recordstores/:id/reviews", reviews)
+app.use("/users", users)
 
 app.get('/', (req, res) => {
     res.render('home')
