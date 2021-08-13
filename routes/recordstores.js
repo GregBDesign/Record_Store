@@ -5,6 +5,7 @@ const wrapAsync = require('../helpers/wrapAsync');
 // custom Joi validation for creation of new record store and reviews
 const RecordStore = require('../models/recordstore');
 const { validationRS } = require('../models/validators/func/validationFunc')
+const { checkAuth } = require('../middleware/checkAuth');
 
 router
     .route('/')
@@ -13,7 +14,7 @@ router
         res.render('recordstores/index', {recordstore})
     })
 )
-    .post(validationRS, wrapAsync(async (req, res, next) => {
+    .post(checkAuth, validationRS, wrapAsync(async (req, res, next) => {
         const recordStore = new RecordStore(req.body.recordstore)
         await recordStore.save()
         req.flash('success', 'New record store added!')
@@ -23,10 +24,9 @@ router
 
 router
     .route('/new')
-    .get(wrapAsync(async (req, res, next) => {
+    .get(checkAuth, (req, res) => {
         res.render('recordstores/new');
-    })
-)
+})
 
 router
     .route('/:id')
@@ -39,14 +39,14 @@ router
         res.render('recordstores/show', {recordstore})
     })
 )
-    .put(validationRS, wrapAsync(async (req, res, next) => {
+    .put(checkAuth, validationRS, wrapAsync(async (req, res, next) => {
         const {id} = req.params
         const recordstore = await RecordStore.findByIdAndUpdate(id, {...req.body.recordstore})
         req.flash('success', 'Record store updated!')
         res.redirect(`/recordstores/${recordstore._id}`)
     })
 )
-    .delete(wrapAsync(async (req, res, next) => {
+    .delete(checkAuth, wrapAsync(async (req, res, next) => {
         const {id} = req.params;
         await RecordStore.findByIdAndDelete(id);
         req.flash('success', 'Record store deleted')
@@ -56,7 +56,7 @@ router
 
 router
     .route('/:id/edit')
-    .get(wrapAsync(async (req, res, next) => {
+    .get(checkAuth, wrapAsync(async (req, res, next) => {
         const recordstore = await RecordStore.findById(req.params.id)
         if(!recordstore){
             req.flash('error', 'That store can\'t be found')
