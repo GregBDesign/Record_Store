@@ -5,12 +5,14 @@ const wrapAsync = require('../helpers/wrapAsync');
 const RecordStore = require('../models/recordstore');
 const Review = require('../models/review');
 const { validationRev } = require('../models/validators/func/validationFunc')
+const { checkAuth, canEdit} = require('../middleware/checkAuth')
 
 router
     .route('/')
-    .post(validationRev, wrapAsync(async (req, res, next) => {
+    .post(checkAuth, validationRev, wrapAsync(async (req, res, next) => {
         const recordstore = await RecordStore.findById(req.params.id);
         const review = new Review(req.body.review);
+        review.author = req.user._id;
         recordstore.reviews.push(review);
         await review.save();
         await recordstore.save();
@@ -21,7 +23,7 @@ router
 
 router
     .route('/:reviewId')
-    .delete(wrapAsync(async (req, res) => {
+    .delete(checkAuth, canEdit, wrapAsync(async (req, res) => {
         const {id, reviewId} = req.params
         await RecordStore.findByIdAndUpdate(id, {$pull: {reviews: reviewId}});
         await Review.findByIdAndDelete(reviewId);

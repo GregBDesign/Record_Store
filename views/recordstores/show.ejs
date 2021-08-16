@@ -9,34 +9,40 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><%= recordstore.location %></li>
+                    <li class="list-group-item">Submitted by: <%= recordstore.author.username %></li>
                 </ul>
-                <div class="card-body">
-                    <a href="/recordstores/<%= recordstore.id %>/edit" class="card-link btn btn-warning">Edit record store</a>
-                    <form class="d-inline" action="/recordstores/<%= recordstore._id %>?_method=DELETE" method="POST">
-                        <button class="btn btn-danger">Delete</button>
-                    </form>
-                </div>
+                <% if(currentUser && recordstore.author.equals(currentUser._id)){ %>
+                    <div class="card-body">
+                        <a href="/recordstores/<%= recordstore.id %>/edit" class="card-link btn btn-warning">Edit record store</a>
+                        <form class="d-inline" action="/recordstores/<%= recordstore._id %>?_method=DELETE" method="POST">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                <% } %>
             </div>
         </div>
         <div class="col-6">
-            <h2>Review <%= recordstore.title %></h2>
-            <form class="mb-3 valid-form" action="/recordstores/<%= recordstore._id %>/reviews" method="POST" novalidate>
-                <div class="mb-3">
-                    <label class="form-label" for="rating">Rating</label>
-                    <input class="form-range" type="range" name="review[rating]" id="rating" min="1" max="5"> 
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="body">Review</label>
-                    <textarea class="form-control" name="review[body]" id="body" required></textarea>
-                </div>
-                <input class="btn btn-success" type="submit" value="Submit">
-            </form>
+            <% if(currentUser) { %>
+                <h2>Review <%= recordstore.title %></h2>
+                <form class="mb-3 valid-form" action="/recordstores/<%= recordstore._id %>/reviews" method="POST" novalidate>
+                    <div class="mb-3">
+                        <label class="form-label" for="rating">Rating</label>
+                        <input class="form-range" type="range" name="review[rating]" id="rating" min="1" max="5"> 
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="body">Review</label>
+                        <textarea class="form-control" name="review[body]" id="body" required></textarea>
+                    </div>
+                    <input class="btn btn-success" type="submit" value="Submit">
+                </form>
+            <% } %>
             <div class="mb-3">
-                <h3>Previous reviews</h3>
-                <% for(let review of recordstore.reviews) { %>
+                <h3>Previous reviews of <%= recordstore.title %></h3>
+                <% for(let review of recordstore.reviews) { console.log(review.author)%>
                     <div class="card mb-3">
                         <div class="card-body">
                             <h5 class="card-text"><%= review.rating %> / 5</h5>
+                            <h6 class="card-text"><%= review.author.username %> </h6>
                             <p class="card-text"><%= review.body %></p>
                             <form action="/recordstores/<%= recordstore.id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
                                 <input class="btn btn-sm btn-danger" type="submit" value="Delete">
