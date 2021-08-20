@@ -2,7 +2,7 @@
     <div class="row">
         <h1 class="text-center">New Recordstore</h1>
         <div class="col-6 offset-3">
-            <form action="/recordstores" method="POST" class="valid-form" novalidate>
+            <form action="/recordstores" method="POST" class="valid-form" enctype="multipart/form-data" novalidate>
                 <div class="mb-3">
                     <label class="form-label" for="title">Title</label>
                     <!-- Using "recordstore[VAL] in the name will create an object called 'recordstore' with VAL as the key -->
@@ -13,12 +13,12 @@
                     <input class="form-control" type="text" id="location" name="recordstore[location]" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="image">Image URL</label>
-                    <input class="form-control" type="text" id="image" name="recordstore[image]" required>
+                    <label class="form-label" for="image">Image Upload</label>
+                    <input class="form-control" type="file" id="image" name="recordstore[image]" multiple> 
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="description">Description</label>
-                    <textarea class="form-control" type="text" id="description" name="recordstore[description]" required></textarea>
+                    <textarea class="form-control" type="text" id="description" name="recordstore[description]"></textarea>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-success">Add record store</button>

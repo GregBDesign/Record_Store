@@ -1,5 +1,8 @@
 const express = require('express')
 const router = express.Router()
+const multer = require('multer')
+const { storage } = require('../cloudinary')
+const upload = multer({ storage })
 // custom function for handling errors in async functions
 const wrapAsync = require('../helpers/wrapAsync');
 // custom Joi validation for creation of new record store and reviews
@@ -10,7 +13,11 @@ const { checkAuth, canEdit } = require('../middleware/checkAuth');
 router
     .route('/')
     .get(wrapAsync(recordstore.index))
-    .post(checkAuth, validationRS, wrapAsync(recordstore.postNew))
+    // .post(checkAuth, validationRS, wrapAsync(recordstore.postNew))
+    .post(upload.array('recordstore[image]'), (req, res) => {
+        console.log(req.body, req.files)
+        res.send('Works')
+    })
 
 router
     .route('/new')
