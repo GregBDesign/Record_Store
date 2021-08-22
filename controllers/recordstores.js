@@ -8,6 +8,7 @@ module.exports.index = async (req, res, next) => {
 module.exports.postNew = async (req, res, next) => {
     const recordStore = new RecordStore(req.body.recordstore)
     recordStore.author = req.user._id;
+    recordStore.images = req.files.map(image => ({url: image.path, filename: image.filename}))
     await recordStore.save()
     req.flash('success', 'New record store added!')
     res.redirect(`recordstores/${recordStore.id}`)

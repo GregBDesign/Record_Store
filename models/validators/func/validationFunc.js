@@ -1,5 +1,6 @@
 const rsvalidator = require('../validationrs');
 const reviewvalidator = require('../validationrev');
+const ExpressError = require('../../../helpers/expressErr');
 
 // validation with custom Joi validation schema
 module.exports.validationRS = (req, res, next) => {

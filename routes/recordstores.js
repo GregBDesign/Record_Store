@@ -13,11 +13,8 @@ const { checkAuth, canEdit } = require('../middleware/checkAuth');
 router
     .route('/')
     .get(wrapAsync(recordstore.index))
-    // .post(checkAuth, validationRS, wrapAsync(recordstore.postNew))
-    .post(upload.array('recordstore[image]'), (req, res) => {
-        console.log(req.body, req.files)
-        res.send('Works')
-    })
+    // .post(checkAuth, validationRS, upload.array('image'), wrapAsync(recordstore.postNew))
+    .post(checkAuth, upload.array('recordstore[image]'), validationRS, wrapAsync(recordstore.postNew))
 
 router
     .route('/new')

@@ -4,7 +4,10 @@ const Schema = mongoose.Schema;
 
 const RecordStoreSchema = new Schema({
     title: String,
-    image: String,
+    images: [
+        {url: String,
+        filename: String}
+    ],
     description: String,
     location: String,
     author: {
