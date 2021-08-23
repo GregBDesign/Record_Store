@@ -2,7 +2,7 @@
     <div class="row">
         <h1 class="text-center">Edit Recordstore</h1>
         <div class="col-6 offset-3">
-            <form action="/recordstores/<%=recordstore._id%>?_method=PUT" method="POST" class="valid-form" novalidate>
+            <form action="/recordstores/<%=recordstore._id%>?_method=PUT" method="POST" class="valid-form" novalidate enctype="multipart/form-data">
                 <div class="mb-3">
                     <label class="form-label" for="title">Title</label>
                     <input class="form-control" type="text" id="title" name="recordstore[title]" value="<%= recordstore.title %>" required>
@@ -12,12 +12,21 @@
                     <input class="form-control" type="text" id="location" name="recordstore[location]" value="<%= recordstore.location %>" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="image">Image URL</label>
-                    <input class="form-control" type="text" id="image" name="recordstore[image]" value="<%= recordstore.image %>" required>
+                    <label class="form-label" for="image">Add Images</label>
+                    <input class="form-control" type="file" id="image" name="recordstore[image]" value="<%= recordstore.image %>" multiple>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="description">Description</label>
                     <textarea class="form-control" type="text" id="description" name="recordstore[description]" required><%= recordstore.description %></textarea>
+                </div>
+                <div class="mb-3">
+                    <% recordstore.images.forEach((img, index) => { %>
+                        <img class="img-thumbnail" src="<%= img.url %>" alt="">
+                        <div class="form-check-inline">
+                            <input type="checkbox" name="deleteImages[]" id="image-<%= index %>" value="<%= img.filename %>">
+                        </div>
+                        <label for="image-<%= index %>">Delete</label>
+                    <% }) %>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-success">Update record store</button>

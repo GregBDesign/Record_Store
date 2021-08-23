@@ -23,7 +23,7 @@ router
 router
     .route('/:id')
     .get(wrapAsync(recordstore.idStore))
-    .put(checkAuth, canEdit, validationRS, wrapAsync(recordstore.editStore))
+    .put(checkAuth, canEdit, upload.array('recordstore[image]'), validationRS, wrapAsync(recordstore.editStore))
     .delete(checkAuth, canEdit, wrapAsync(recordstore.deleteStore))
 
 router

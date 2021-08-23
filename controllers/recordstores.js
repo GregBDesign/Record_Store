@@ -1,4 +1,5 @@
 const RecordStore = require('../models/recordstore');
+const {cloudinary} = require("../cloudinary");
 
 module.exports.index = async (req, res, next) => {
     const recordstore = await RecordStore.find({});
@@ -44,6 +45,15 @@ module.exports.idStore = async (req, res, next) => {
 module.exports.editStore = async (req, res, next) => {
     const {id} = req.params
     const record = await RecordStore.findByIdAndUpdate(id, {...req.body.recordstore})
+    const images = req.files.map(image => ({url: image.path, filename: image.filename}))
+    record.images.push(...images)
+    await record.save()
+    if (req.body.deleteImages){
+        for(let file of req.body.deleteImages){
+            cloudinary.uploader.destroy(file)
+        }
+        await record.updateOne({$pull: {images: { filename: {$in: req.body.deleteImages}}}})
+    }
     req.flash('success', 'Record store updated!')
     res.redirect(`/recordstores/${record._id}`)
 }
