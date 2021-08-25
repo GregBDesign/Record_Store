@@ -21,7 +21,7 @@
                 </div>
                 <div class="mb-3">
                     <% recordstore.images.forEach((img, index) => { %>
-                        <img class="img-thumbnail" src="<%= img.url %>" alt="">
+                        <img class="img-thumbnail" src="<%= img.thumbnail %>" alt="">
                         <div class="form-check-inline">
                             <input type="checkbox" name="deleteImages[]" id="image-<%= index %>" value="<%= img.filename %>">
                         </div>

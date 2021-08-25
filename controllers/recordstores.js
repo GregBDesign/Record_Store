@@ -1,4 +1,7 @@
 const RecordStore = require('../models/recordstore');
+const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const mapBoxToken = process.env.MAPBOX_TOKEN;
+const geoCoder = mbxGeocoding({accessToken: mapBoxToken});
 const {cloudinary} = require("../cloudinary");
 
 module.exports.index = async (req, res, next) => {
@@ -7,10 +10,16 @@ module.exports.index = async (req, res, next) => {
 }
 
 module.exports.postNew = async (req, res, next) => {
+    const geoData = await geoCoder.forwardGeocode({
+        query: req.body.recordstore.location,
+        limit: 1,
+    }).send()
     const recordStore = new RecordStore(req.body.recordstore)
+    recordStore.geodata = geoData.body.features[0].geometry
     recordStore.author = req.user._id;
     recordStore.images = req.files.map(image => ({url: image.path, filename: image.filename}))
     await recordStore.save()
+    console.log(recordStore)
     req.flash('success', 'New record store added!')
     res.redirect(`recordstores/${recordStore.id}`)
 }
