@@ -2,6 +2,7 @@
 <link rel="stylesheet" href="/styles/stars.css">
     <div class="row">
         <div class="col-6">
+            <div id='map' style='width: 400px; height: 300px;'></div>
             <div class="card">
                 <div id="recordstoreCarousel" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
@@ -91,6 +92,12 @@
             <a href="/recordstores">All recordstores</a>
         </footer>
     </div>
+    <script>
+        const mapBoxToken = '<%= process.env.MAPBOX_TOKEN %>'
+        const recordStore = <%- JSON.stringify(recordstore) %>
+    </script>
+    <script src="/showMap.js"></script>
+    
     
 
     
