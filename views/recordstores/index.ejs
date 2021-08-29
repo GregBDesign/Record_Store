@@ -1,22 +1,28 @@
 <% layout('layouts/boilerplate') %>
-    <h1>All Recordstores</h1>
-    <div>
-        <a href="recordstores/new">New recordstore</a>
-    </div>
-        <% for(let store of recordstore){ %>
-            <div class="card" mb-3>
-                <div class="row">
-                    <img class="img-fluid" src="<%= store.images[0].url %>" alt="Record store">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title"><%= store.title %></h5>
-                        <p class="card-text"><%= store.description %></p>
-                        <p class="card-text">
-                            <small class="text-muted"><%= store.location %></small>
-                        </p>
-                    </div>
-                </div>
-                <a class="btn btn-primary" href="/recordstores/<%= store._id %>"><%=store.title%></a>
+<div id="map" style="width: 100%; height: 500px"></div>
+<h1>All Recordstores</h1>
+<div>
+    <a href="recordstores/new">New recordstore</a>
+</div>
+    <% for(let store of recordstore){ %>
+        <div class="card" mb-3>
+            <div class="row">
+                <img class="img-fluid" src="<%= store.images[0].url %>" alt="Record store">
             </div>
-        <% } %>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title"><%= store.title %></h5>
+                    <p class="card-text"><%= store.description %></p>
+                    <p class="card-text">
+                        <small class="text-muted"><%= store.location %></small>
+                    </p>
+                </div>
+            </div>
+            <a class="btn btn-primary" href="/recordstores/<%= store._id %>"><%=store.title%></a>
+        </div>
+    <% } %>
+<script>
+    const mapBoxToken = '<%= process.env.MAPBOX_TOKEN %>';
+    const recordStore = { features: <%- JSON.stringify(recordstore) %> }
+</script>
+<script src="/clusterMap.js"></script>

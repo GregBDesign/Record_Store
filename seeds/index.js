@@ -26,7 +26,7 @@ const seedDB = async () => {
             location: `${cities[random1000].city} ${cities[random1000].state}`,
             images: [{"url" : "https://res.cloudinary.com/dbdcclhzw/image/upload/v1629594887/Recordstore/l9sjancxucn859hmed99.jpg", "filename" : "Recordstore/l9sjancxucn859hmed99" }, {"url" : "https://res.cloudinary.com/dbdcclhzw/image/upload/v1629594887/Recordstore/qsxksuqbmjndyvtaoht2.jpg", "filename" : "Recordstore/qsxksuqbmjndyvtaoht2" }],
             description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi ipsa ratione commodi nemo unde, fugiat veritatis temporibus porro quam saepe!",
-            geodata: {type: 'Point', coordinates: [-74.5, 40]},
+            geodata: {type: 'Point', coordinates: [cities[random1000].longitude, cities[random1000].latitude]},
         })
         await newStore.save();
     }
