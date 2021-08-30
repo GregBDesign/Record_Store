@@ -25,12 +25,14 @@ const LocationSchema = new Schema({
     }
 })
 
+const opts = {toJSON: {virtuals: true}};
+
 const RecordStoreSchema = new Schema({
     title: String,
     images: [ImageSchema],
     description: String,
     location: String,
-    geodata: LocationSchema,
+    geometry: LocationSchema,
     author: {
         type: Schema.Types.ObjectId,
         ref: "User"
@@ -41,6 +43,12 @@ const RecordStoreSchema = new Schema({
             ref: "Review"
         }   
     ]
+}, opts)
+
+/* Adds virtual to properties.popUpText to pass store name and id
+to mapBox cluster map to add name and link to view page for store */
+RecordStoreSchema.virtual('properties.popUpText').get(function() {
+    return `<h2><a href="/recordstores/${this._id}">${this.title}</a></h2>`
 })
 
 /* Deletion middleware to delete all reviews associated with a recordstore

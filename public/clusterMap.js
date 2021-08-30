@@ -1,7 +1,7 @@
 mapboxgl.accessToken = mapBoxToken
 const map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/dark-v10',
+    style: 'mapbox://styles/mapbox/light-v10',
     center: [-103.5917, 40.6699],
     zoom: 3
     });
@@ -10,7 +10,6 @@ map.on('load', () => {
 // Add a new source from our GeoJSON data and
 // set the 'cluster' option to true. GL-JS will
 // add the point_count property to your source data.
-console.log(recordStore)
     map.addSource('recordstore', {
         type: 'geojson',
         data: recordStore,
@@ -88,7 +87,7 @@ map.on('click', 'clusters', (e) => {
         if (err) return;
  
         map.easeTo({
-        center: features[0].geodata.coordinates,
+        center: features[0].geometry.coordinates,
         zoom: zoom
         });
         }
@@ -100,11 +99,8 @@ map.on('click', 'clusters', (e) => {
 // the location of the feature, with
 // description HTML from its properties.
 map.on('click', 'unclustered-point', (e) => {
-    const coordinates = e.features[0].geodata.coordinates.slice();
-    const mag = e.features[0].properties.mag;
-    const tsunami =
-    e.features[0].properties.tsunami === 1 ? 'yes' : 'no';
-    
+    const coordinates = e.features[0].geometry.coordinates.slice();
+    const store = e.features[0].properties.popUpText
     // Ensure that if the map is zoomed out such that
     // multiple copies of the feature are visible, the
     // popup appears over the copy being pointed to.
@@ -114,9 +110,7 @@ map.on('click', 'unclustered-point', (e) => {
     
     new mapboxgl.Popup()
     .setLngLat(coordinates)
-    .setHTML(
-        `magnitude: ${mag}<br>Was there a tsunami?: ${tsunami}`
-    )
+    .setHTML(`${store}`)
     .addTo(map);
     });
     
