@@ -1,26 +1,25 @@
 <% layout('layouts/boilerplate') %>
-<div id="map" style="width: 100%; height: 500px"></div>
-<h1>All Recordstores</h1>
-<div>
-    <a href="recordstores/new">New recordstore</a>
-</div>
+<h1 class="text-center">All Recordstores</h1>
+<div id="map" style="width: 100%; height: 25vh"></div>
+<div class="row w-75 mx-auto">
     <% for(let store of recordstore){ %>
-        <div class="card mb-3">
+        <div class="card my-3 w-50 ">
             <div class="row">
                 <img class="img-fluid" src="<%= store.images[0].url %>" alt="Record store">
             </div>
-            <div class="col-md-8">
+            <div class="mx-auto col-md-8">
                 <div class="card-body">
-                    <h5 class="card-title"><%= store.title %></h5>
+                    <h5 class="card-title text-center"><%= store.title %></h5>
                     <p class="card-text"><%= store.description %></p>
                     <p class="card-text">
-                        <small class="text-muted"><%= store.location %></small>
+                        <small class="text-muted text-center"><%= store.location %></small>
                     </p>
                 </div>
             </div>
             <a class="btn btn-primary" href="/recordstores/<%= store._id %>"><%=store.title%></a>
         </div>
     <% } %>
+</div>
 <script>
     const mapBoxToken = '<%= process.env.MAPBOX_TOKEN %>';
     const recordStore = { features: <%- JSON.stringify(recordstore) %> }

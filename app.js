@@ -67,6 +67,7 @@ const scriptSrcUrls = [
 ]
 
 const styleSrcUrls = [
+    "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css",
     "https://stackpath.bootstrapcdn.com/",
     "https://api.mapbox.com/",
     "https://api.tiles.mapbox.com/",
@@ -85,7 +86,7 @@ app.use(
     helmet.contentSecurityPolicy({
         directives: {
             defaultSrc: [],
-            connectSrc: ["'self", ...connectSrcUrls],
+            connectSrc: ["'self'", ...connectSrcUrls],
             scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
             styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
             workerSrc: ["'self'", "blob:"],
