@@ -48,7 +48,7 @@ const RecordStoreSchema = new Schema({
 /* Adds virtual to properties.popUpText to pass store name and id
 to mapBox cluster map to add name and link to view page for store */
 RecordStoreSchema.virtual('properties.popUpText').get(function() {
-    return `<h2><a href="/recordstores/${this._id}">${this.title}</a></h2>`
+    return `<p><a href="/recordstores/${this._id}">${this.title}</a></p>`
 })
 
 /* Deletion middleware to delete all reviews associated with a recordstore

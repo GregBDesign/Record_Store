@@ -15,8 +15,11 @@ module.exports.postNew = async (req, res, next) => {
         limit: 1,
     }).send()
     const recordStore = new RecordStore(req.body.recordstore)
-    recordStore.geodata = geoData.body.features[0].geometry
+    recordStore.geometry = geoData.body.features[0].geometry
     recordStore.author = req.user._id;
+    /* TO DO - In production, once I've added some stores, just set the below
+    to an array of 2 default images. Line 23 is production array of two static images */
+    // recordStore.images = ['https://res.cloudinary.com/dbdcclhzw/image/upload/v1629696459/Recordstore/vpbj7jln1lokww6k84du.jpg', 'https://res.cloudinary.com/dbdcclhzw/image/upload/v1629594887/Recordstore/l9sjancxucn859hmed99.jpg']
     recordStore.images = req.files.map(image => ({url: image.path, filename: image.filename}))
     await recordStore.save()
     console.log(recordStore)

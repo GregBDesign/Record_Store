@@ -9,16 +9,16 @@ body {
     width: 100%;
     background-image: url('../images/home-bg.jpg');
     background-size: cover;
-    height: 70vh;
+    height: 75vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: #FAFF00;
+    color: #FFF;
 }
 
 #home a {
-    color: #FAFF00;
+    color: #FFF;
 }
 
 #home p {
@@ -26,6 +26,6 @@ body {
 }
 
 #home-colour {
-    background-color: rgba(10, 5, 241, 0.5);
+    background-color: rgba(33, 37, 41, 0.5);
     padding: 3vh 2vw;
 }

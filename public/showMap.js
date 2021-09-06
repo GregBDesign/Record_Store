@@ -6,6 +6,9 @@ const map = new mapboxgl.Map({
     zoom: 12 // starting zoom
 });
 
+const nav = new mapboxgl.NavigationControl()
+map.addControl(nav, "bottom-right")
+
 let marker = new mapboxgl.Marker()
     .setLngLat(recordStore.geometry.coordinates)
     .setPopup(

@@ -14,12 +14,15 @@ const helmet = require('helmet')
 const passport = require('passport')
 const passportLocal = require('passport-local')
 const User = require('./models/user')
+// const dbUrl = process.env.DB_URL
 
 const recordstores = require('./routes/recordstores')
 const reviews = require('./routes/reviews')
 const users = require('./routes/users')
 
-mongoose.connect('mongodb://localhost:27017/record-store', 
+// 'mongodb://localhost:27017/record-store'
+
+mongoose.connect('mongodb://localhost:27017/record-store',
     {useNewUrlParser: true, 
     useCreateIndex: true,
     useUnifiedTopology: true,
@@ -81,7 +84,6 @@ const connectSrcUrls = [
     "https://events.mapbox.com/",
 ]
 
-// TO DO: Sort out below
 app.use(
     helmet.contentSecurityPolicy({
         directives: {

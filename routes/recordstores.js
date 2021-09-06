@@ -14,6 +14,7 @@ router
     .route('/')
     .get(wrapAsync(recordstore.index))
     // .post(checkAuth, validationRS, upload.array('image'), wrapAsync(recordstore.postNew))
+    // Update below for production - remove upload.array
     .post(checkAuth, upload.array('recordstore[image]'), validationRS, wrapAsync(recordstore.postNew))
 
 router
