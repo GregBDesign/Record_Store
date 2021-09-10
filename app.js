@@ -14,15 +14,13 @@ const helmet = require('helmet')
 const passport = require('passport')
 const passportLocal = require('passport-local')
 const User = require('./models/user')
-// const dbUrl = process.env.DB_URL
-
+const dbUrl = process.env.DB_URL
+const MongoDBStore = require('connect-mongo')
 const recordstores = require('./routes/recordstores')
 const reviews = require('./routes/reviews')
 const users = require('./routes/users')
 
-// 'mongodb://localhost:27017/record-store'
-
-mongoose.connect('mongodb://localhost:27017/record-store',
+mongoose.connect(dbUrl,
     {useNewUrlParser: true, 
     useCreateIndex: true,
     useUnifiedTopology: true,
@@ -44,15 +42,27 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.urlencoded({extended: true}))
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
+
+const store = MongoDBStore.create({
+    mongoUrl: dbUrl,
+    secret: process.env.SECRET,
+    touchAfter: 24 * 60 * 60,
+})
+
+store.on("error", function(e) {
+    console.log("Error with Store DB", e)
+})
+
 app.use(session({
+    store,
     name: 'session',
-    secret: 'greatSecret',
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
         // USE BELOW WHEN DEPLOYING
-        // secure: true,
+        secure: true,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7,
     }
