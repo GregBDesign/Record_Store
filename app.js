@@ -53,6 +53,7 @@ store.on("error", function(e) {
     console.log("Error with Store DB", e)
 })
 
+app.set('trust proxy', 1)
 app.use(session({
     store,
     name: 'session',
