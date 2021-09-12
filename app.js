@@ -1,4 +1,6 @@
-require('dotenv').config()
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+}
 const express = require('express')
 const path = require('path')
 const mongoose = require('mongoose')
@@ -43,6 +45,18 @@ app.use(express.urlencoded({extended: true}))
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
 
+// Flash middleware
+app.use(flash())
+app.use((req, res, next) => {
+    res.locals.currUser = req.user;
+    res.locals.success = req.flash('success')
+    res.locals.error = req.flash('error')
+    console.log(res.locals.currUser)
+    console.log(res.locals.success)
+    console.log(res.locals.error)
+    next()
+})
+
 const store = MongoDBStore.create({
     mongoUrl: dbUrl,
     secret: process.env.SECRET,
@@ -53,7 +67,10 @@ store.on("error", function(e) {
     console.log("Error with Store DB", e)
 })
 
-app.set('trust proxy', 1)
+if (process.env.NODE_ENV === 'production') {
+    app.set('trust proxy', 1)
+}
+
 app.use(session({
     store,
     name: 'session',
@@ -62,8 +79,8 @@ app.use(session({
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
-        // USE BELOW WHEN DEPLOYING
-        secure: true,
+        // Below is for use in production
+        //secure: true,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7,
     }
@@ -116,8 +133,7 @@ app.use(
     })
 )
 
-// Flash and passport config
-app.use(flash())
+// Passport config
 app.use(passport.initialize())
 app.use(passport.session())
 passport.use(new passportLocal(User.authenticate()))
@@ -125,13 +141,7 @@ passport.use(new passportLocal(User.authenticate()))
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
-// Flash middleware
-app.use((req, res, next) => {
-    res.locals.currUser = req.user;
-    res.locals.success = req.flash('success')
-    res.locals.error = req.flash('error')
-    next()
-})
+
 
 app.use("/recordstores", recordstores)
 app.use("/recordstores/:id/reviews", reviews)
@@ -152,7 +162,7 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render('error', {err})
 })
 
-const port = process.env.PORT
+const port = process.env.PORT || 3000
 
 app.listen(port, () => {
     console.log(`Serving on port ${port}`);

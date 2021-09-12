@@ -25,7 +25,7 @@ module.exports.canEditReview = async (req, res, next) => {
     const review = await Review.findById(reviewId)
     if(req.user._id && !review.author.equals(req.user._id)){
         req.flash('error', 'You don\'t have permission to delete this review')
-        return res.redirect(`/campgrounds/${id}`)
+        return res.redirect(`/recordstores/${id}`)
     }
     next()
 }
