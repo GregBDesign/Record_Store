@@ -22,7 +22,6 @@ module.exports.postNew = async (req, res, next) => {
     // recordStore.images = ['https://res.cloudinary.com/dbdcclhzw/image/upload/v1629696459/Recordstore/vpbj7jln1lokww6k84du.jpg', 'https://res.cloudinary.com/dbdcclhzw/image/upload/v1629594887/Recordstore/l9sjancxucn859hmed99.jpg']
     recordStore.images = req.files.map(image => ({url: image.path, filename: image.filename}))
     await recordStore.save()
-    console.log(recordStore)
     req.flash('success', 'New record store added!')
     res.redirect(`recordstores/${recordStore.id}`)
 }

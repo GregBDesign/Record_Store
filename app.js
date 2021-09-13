@@ -1,3 +1,5 @@
+//ISSUES 13.09 - TRY ADDING HARDCODED VALUES TO REQ.SESSIONS TO SEE IF THAT MAKES A DIFFERENCE
+
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
@@ -45,20 +47,9 @@ app.use(express.urlencoded({extended: true}))
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
 
-// Flash middleware
-app.use(flash())
-app.use((req, res, next) => {
-    res.locals.currUser = req.user;
-    res.locals.success = req.flash('success')
-    res.locals.error = req.flash('error')
-    console.log(res.locals.currUser)
-    console.log(res.locals.success)
-    console.log(res.locals.error)
-    next()
-})
-
 const store = MongoDBStore.create({
     mongoUrl: dbUrl,
+    secret: 'Devsecret',
     secret: process.env.SECRET,
     touchAfter: 24 * 60 * 60,
 })
@@ -66,10 +57,6 @@ const store = MongoDBStore.create({
 store.on("error", function(e) {
     console.log("Error with Store DB", e)
 })
-
-if (process.env.NODE_ENV === 'production') {
-    app.set('trust proxy', 1)
-}
 
 app.use(session({
     store,
@@ -133,7 +120,8 @@ app.use(
     })
 )
 
-// Passport config
+// Passport and flash config
+app.use(flash())
 app.use(passport.initialize())
 app.use(passport.session())
 passport.use(new passportLocal(User.authenticate()))
@@ -141,7 +129,18 @@ passport.use(new passportLocal(User.authenticate()))
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
-
+// Flash middleware
+if (process.env.NODE_ENV === 'production') {
+    app.set('trust proxy', 1)
+}
+app.use((req, res, next) => {
+    res.locals.currUser = req.user;
+    res.locals.success = req.flash('success')
+    //res.locals.success = 'HARDCODE'
+    res.locals.error = req.flash('error')
+    //res.locals.error = 'HARDCODE'
+    next()
+})
 
 app.use("/recordstores", recordstores)
 app.use("/recordstores/:id/reviews", reviews)
