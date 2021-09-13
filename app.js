@@ -1,5 +1,3 @@
-//ISSUES 13.09 - TRY ADDING HARDCODED VALUES TO REQ.SESSIONS TO SEE IF THAT MAKES A DIFFERENCE
-
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
@@ -136,9 +134,7 @@ if (process.env.NODE_ENV === 'production') {
 app.use((req, res, next) => {
     res.locals.currUser = req.user;
     res.locals.success = req.flash('success')
-    //res.locals.success = 'HARDCODE'
     res.locals.error = req.flash('error')
-    //res.locals.error = 'HARDCODE'
     next()
 })
 

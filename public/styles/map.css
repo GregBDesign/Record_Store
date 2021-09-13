@@ -3,3 +3,16 @@
     width: 100%;
     height: 25vh;
   }
+
+  /* Index page - Card styles */
+.img-fluid {
+  height: 20vh;
+  width: 100%;
+  object-fit: cover;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
