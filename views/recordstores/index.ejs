@@ -11,7 +11,7 @@
             <div class="mx-auto col-md-8">
                 <div class="card-body">
                     <h5 class="card-title text-center"><%= store.title %></h5>
-                    <p class="card-text"><%= store.description %></p>
+                    <p class="card-text"><%= store.description.substring(0, 100) %><a href="/recordstores/<%= store._id %>">...</a></p>
                     <p class="card-text">
                         <small class="text-muted text-center"><%= store.location %></small>
                     </p>
