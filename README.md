@@ -4,6 +4,12 @@ This is a web application which allows users to upload information about Austral
 
 The live project can be viewed [here](https://ozrecordstore.herokuapp.com/)
 
+## Login 
+I've set up a test user account so users can add and edit recordstores, along with adding and removing reviews that have been left by the user.
+
+Username: testuser
+Password: test1234
+
 ## Technologies
 This app was built using HTML, CSS, Bootstrap, Javascript, Node, Express and MongoDB. It also incorporates validations using PassportJS. The MapBox API is used to show record store locations and cluster maps.
 
