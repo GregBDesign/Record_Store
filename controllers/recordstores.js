@@ -17,10 +17,11 @@ module.exports.postNew = async (req, res, next) => {
     const recordStore = new RecordStore(req.body.recordstore)
     recordStore.geometry = geoData.body.features[0].geometry
     recordStore.author = req.user._id;
-    /* TO DO - In production, once I've added some stores, just set the below
-    to an array of 2 default images. Line 23 is production array of two static images */
-    // recordStore.images = ['https://res.cloudinary.com/dbdcclhzw/image/upload/v1629696459/Recordstore/vpbj7jln1lokww6k84du.jpg', 'https://res.cloudinary.com/dbdcclhzw/image/upload/v1629594887/Recordstore/l9sjancxucn859hmed99.jpg']
-    recordStore.images = req.files.map(image => ({url: image.path, filename: image.filename}))
+    if(req.session.passport.user === 'admin'){
+        recordStore.images = req.files.map(image => ({url: image.path, filename: image.filename}))
+    } else {
+        recordStore.images = [{url: 'https://res.cloudinary.com/dbdcclhzw/image/upload/v1629696459/Recordstore/vpbj7jln1lokww6k84du.jpg', filename: 'Recordstore/vpbj7jln1lokww6k84du'}, {url: 'https://res.cloudinary.com/dbdcclhzw/image/upload/v1629594887/Recordstore/l9sjancxucn859hmed99.jpg', filename: 'Recordstore/l9sjancxucn859hmed99'}]
+    }
     await recordStore.save()
     req.flash('success', 'New record store added!')
     res.redirect(`recordstores/${recordStore.id}`)
