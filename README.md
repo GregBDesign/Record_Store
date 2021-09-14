@@ -7,7 +7,7 @@ The live project can be viewed [here](https://ozrecordstore.herokuapp.com/)
 ## Login 
 I've set up a test user account so users can add and edit recordstores, along with adding and removing reviews that have been left by the user.
 
-Username: testuser
+Username: testuser  
 Password: test1234
 
 ## Technologies
