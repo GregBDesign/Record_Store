@@ -1,5 +1,5 @@
 # Australian Record Stores
-## A record store listing site
+## A record store listing web application
 
 v1.1
 
